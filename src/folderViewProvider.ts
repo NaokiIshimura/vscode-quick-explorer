@@ -54,7 +54,7 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
         // プロジェクトルートでない場合は、親ディレクトリへの移動アイテムを追加
         if (!this.isAtProjectRoot()) {
           const parentPath = this.fileSystemService.getParentDirectory(this.currentDirectory);
-          items.push(new ParentDirectoryTreeItem(parentPath));
+          items.push(new ParentDirectoryTreeItem(parentPath, this.projectRoot));
         }
 
         // 現在のディレクトリの内容を取得
