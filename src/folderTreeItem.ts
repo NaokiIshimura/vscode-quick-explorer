@@ -12,45 +12,33 @@ export class FolderTreeItem extends vscode.TreeItem {
    */
   constructor(
     public readonly label: string,
-    public readonly resourceUri: vscode.Uri,
+    resourceUri: vscode.Uri,
     public readonly isDirectory: boolean
   ) {
-    super(
-      label,
-      isDirectory
-        ? vscode.TreeItemCollapsibleState.None
-        : vscode.TreeItemCollapsibleState.None
-    );
+    super(resourceUri, vscode.TreeItemCollapsibleState.None);
 
     // ツールチップに完全なパスを表示
-    this.tooltip = this.resourceUri.fsPath;
-
-    // アイコンの設定
-    this.iconPath = this.isDirectory
-      ? new vscode.ThemeIcon('folder')
-      : new vscode.ThemeIcon('file');
+    this.tooltip = resourceUri.fsPath;
 
     // ファイルの場合は、クリック時にファイルを開くコマンドを設定
     if (!this.isDirectory) {
       this.command = {
         command: 'vscode.open',
         title: 'Open File',
-        arguments: [this.resourceUri],
+        arguments: [resourceUri],
       };
     } else {
       // フォルダの場合は、ディレクトリを変更するコマンドを設定
       this.command = {
         command: 'folderViewer.changeDirectory',
         title: 'Change Directory',
-        arguments: [this.resourceUri.fsPath],
+        arguments: [resourceUri.fsPath],
       };
     }
-  }
 
-  /**
-   * コンテキスト値（将来的なコンテキストメニュー用）
-   */
-  contextValue = this.isDirectory ? 'folder' : 'file';
+    // コンテキスト値（将来的なコンテキストメニュー用）
+    this.contextValue = this.isDirectory ? 'folder' : 'file';
+  }
 }
 
 /**

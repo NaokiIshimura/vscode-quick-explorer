@@ -61,11 +61,12 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
 
         // 各エントリをTreeItemに変換
         const treeItems = entries.map((entry) => {
-          return new FolderTreeItem(
+          const item = new FolderTreeItem(
             entry.name,
             vscode.Uri.file(entry.path),
             entry.isDirectory
           );
+          return item;
         });
 
         items.push(...treeItems);
