@@ -10,6 +10,9 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
   /** 現在表示しているディレクトリのパス */
   private currentDirectory: string;
 
+  /** プロジェクトルート（これより上には移動しない） */
+  private readonly projectRoot: string;
+
   /** ビュー更新のためのイベントエミッター */
   private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | null | void> =
     new vscode.EventEmitter<vscode.TreeItem | undefined | null | void>();
@@ -24,6 +27,7 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
   constructor(private fileSystemService: FileSystemService) {
     // 初期ディレクトリを設定（ワークスペースルートまたはホームディレクトリ）
     this.currentDirectory = this.fileSystemService.getInitialDirectory();
+    this.projectRoot = this.currentDirectory;
   }
 
   /**
@@ -46,8 +50,8 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
       try {
         const items: vscode.TreeItem[] = [];
 
-        // ルートディレクトリでない場合は、親ディレクトリへの移動アイテムを追加
-        if (!this.fileSystemService.isRootDirectory(this.currentDirectory)) {
+        // プロジェクトルートでない場合は、親ディレクトリへの移動アイテムを追加
+        if (!this.isAtProjectRoot()) {
           const parentPath = this.fileSystemService.getParentDirectory(this.currentDirectory);
           items.push(new ParentDirectoryTreeItem(parentPath));
         }
@@ -90,6 +94,12 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
         return;
       }
 
+      // プロジェクトルートより上には移動しない
+      if (!this.isPathWithinProjectRoot(directoryPath)) {
+        vscode.window.showInformationMessage('Cannot navigate above project root');
+        return;
+      }
+
       // currentDirectoryを更新
       this.currentDirectory = directoryPath;
 
@@ -121,11 +131,32 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
    * 親ディレクトリに移動する
    */
   async goUp(): Promise<void> {
-    if (!this.fileSystemService.isRootDirectory(this.currentDirectory)) {
+    if (!this.isAtProjectRoot()) {
       const parentPath = this.fileSystemService.getParentDirectory(this.currentDirectory);
       await this.changeDirectory(parentPath);
     } else {
-      vscode.window.showInformationMessage('Already at root directory');
+      vscode.window.showInformationMessage('Already at project root');
     }
+  }
+
+  /**
+   * 現在のディレクトリがプロジェクトルートかどうかを判定する
+   * @returns プロジェクトルートの場合true
+   */
+  private isAtProjectRoot(): boolean {
+    return this.currentDirectory === this.projectRoot;
+  }
+
+  /**
+   * 指定されたパスがプロジェクトルート配下かどうかを判定する
+   * @param path 判定するパス
+   * @returns プロジェクトルート配下の場合true
+   */
+  private isPathWithinProjectRoot(path: string): boolean {
+    // パスを正規化して比較
+    const normalizedPath = path.replace(/\\/g, '/');
+    const normalizedRoot = this.projectRoot.replace(/\\/g, '/');
+
+    return normalizedPath === normalizedRoot || normalizedPath.startsWith(normalizedRoot + '/');
   }
 }
