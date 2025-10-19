@@ -9,16 +9,23 @@ export class FolderTreeItem extends vscode.TreeItem {
    * @param label 表示名
    * @param resourceUri ファイルシステム上のURI
    * @param isDirectory ディレクトリかどうか
+   * @param projectRoot プロジェクトルートのパス
    */
   constructor(
     public readonly label: string,
     resourceUri: vscode.Uri,
-    public readonly isDirectory: boolean
+    public readonly isDirectory: boolean,
+    projectRoot?: string
   ) {
     super(resourceUri, vscode.TreeItemCollapsibleState.None);
 
-    // ツールチップに完全なパスを表示
-    this.tooltip = resourceUri.fsPath;
+    // ツールチップにプロジェクトルートからの相対パスを表示
+    if (projectRoot) {
+      const relativePath = path.relative(projectRoot, resourceUri.fsPath);
+      this.tooltip = relativePath || '.';
+    } else {
+      this.tooltip = resourceUri.fsPath;
+    }
 
     // ファイルの場合は、クリック時にファイルを開くコマンドを設定
     if (!this.isDirectory) {

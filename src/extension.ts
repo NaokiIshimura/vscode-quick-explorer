@@ -21,15 +21,15 @@ export function activate(context: vscode.ExtensionContext) {
     showCollapseAll: false,
   });
 
-  // TreeViewのタイトルに現在のディレクトリパスを表示
-  updateTreeViewTitle(treeView, folderViewProvider.getCurrentDirectory());
+  // TreeViewのタイトルにプロジェクトルートからの相対パスを表示
+  updateTreeViewTitle(treeView, folderViewProvider);
 
   // changeDirectoryコマンドの登録
   const changeDirectoryCommand = vscode.commands.registerCommand(
     'folderViewer.changeDirectory',
     async (directoryPath: string) => {
       await folderViewProvider.changeDirectory(directoryPath);
-      updateTreeViewTitle(treeView, folderViewProvider.getCurrentDirectory());
+      updateTreeViewTitle(treeView, folderViewProvider);
     }
   );
 
@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
   // goUpコマンドの登録
   const goUpCommand = vscode.commands.registerCommand('folderViewer.goUp', async () => {
     await folderViewProvider.goUp();
-    updateTreeViewTitle(treeView, folderViewProvider.getCurrentDirectory());
+    updateTreeViewTitle(treeView, folderViewProvider);
   });
 
   // コンテキストに登録（拡張機能の非アクティブ化時にクリーンアップされる）
@@ -55,10 +55,10 @@ export function activate(context: vscode.ExtensionContext) {
 /**
  * TreeViewのタイトルを更新する
  * @param treeView TreeView
- * @param currentPath 現在のディレクトリパス
+ * @param provider FolderViewProvider
  */
-function updateTreeViewTitle(treeView: vscode.TreeView<vscode.TreeItem>, currentPath: string) {
-  treeView.description = currentPath;
+function updateTreeViewTitle(treeView: vscode.TreeView<vscode.TreeItem>, provider: FolderViewProvider) {
+  treeView.description = provider.getRelativePath();
 }
 
 /**

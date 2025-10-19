@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { FileSystemService } from './fileSystemService';
 import { FolderTreeItem, ParentDirectoryTreeItem } from './folderTreeItem';
 
@@ -64,7 +65,8 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
           const item = new FolderTreeItem(
             entry.name,
             vscode.Uri.file(entry.path),
-            entry.isDirectory
+            entry.isDirectory,
+            this.projectRoot
           );
           return item;
         });
@@ -126,6 +128,23 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
    */
   getCurrentDirectory(): string {
     return this.currentDirectory;
+  }
+
+  /**
+   * プロジェクトルートのパスを取得する
+   * @returns プロジェクトルートのパス
+   */
+  getProjectRoot(): string {
+    return this.projectRoot;
+  }
+
+  /**
+   * プロジェクトルートからの相対パスを取得する
+   * @returns プロジェクトルートからの相対パス
+   */
+  getRelativePath(): string {
+    const relativePath = path.relative(this.projectRoot, this.currentDirectory);
+    return relativePath || '.';
   }
 
   /**
