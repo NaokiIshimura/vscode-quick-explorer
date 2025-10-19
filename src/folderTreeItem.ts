@@ -27,6 +27,11 @@ export class FolderTreeItem extends vscode.TreeItem {
       this.tooltip = resourceUri.fsPath;
     }
 
+    // アイコンを設定
+    if (this.isDirectory) {
+      this.iconPath = new vscode.ThemeIcon('symbol-folder');
+    }
+
     // ファイルの場合は、クリック時にファイルを開くコマンドを設定
     if (!this.isDirectory) {
       this.command = {
