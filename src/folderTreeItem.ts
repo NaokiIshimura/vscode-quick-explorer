@@ -59,11 +59,18 @@ export class FolderTreeItem extends vscode.TreeItem {
 export class ParentDirectoryTreeItem extends vscode.TreeItem {
   /**
    * @param parentPath 親ディレクトリのパス
+   * @param projectRoot プロジェクトルートのパス
    */
-  constructor(public readonly parentPath: string) {
+  constructor(public readonly parentPath: string, projectRoot?: string) {
     super('..', vscode.TreeItemCollapsibleState.None);
 
-    this.tooltip = `Go to parent directory: ${parentPath}`;
+    // ツールチップにプロジェクトルートからの相対パスを表示
+    if (projectRoot) {
+      const relativePath = path.relative(projectRoot, parentPath);
+      this.tooltip = `Go to parent directory: ${relativePath || '.'}`;
+    } else {
+      this.tooltip = `Go to parent directory: ${parentPath}`;
+    }
     this.iconPath = new vscode.ThemeIcon('arrow-up');
     this.command = {
       command: 'folderViewer.changeDirectory',
