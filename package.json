@@ -3,7 +3,7 @@
   "displayName": "Folder Viewer",
   "description": "Interactive folder viewer for VSCode explorer",
   "version": "0.0.1",
-  "publisher": "your-publisher-name",
+  "publisher": "nacn",
   "engines": {
     "vscode": "^1.80.0"
   },
