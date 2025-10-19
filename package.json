@@ -1,12 +1,59 @@
 {
   "name": "vscode-folder-viewer",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "displayName": "Folder Viewer",
+  "description": "Interactive folder viewer for VSCode explorer",
+  "version": "0.0.1",
+  "publisher": "nacn",
+  "engines": {
+    "vscode": "^1.80.0"
   },
-  "keywords": [],
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "folder",
+    "viewer",
+    "explorer",
+    "navigation"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "folderViewer",
+          "name": "Folder Viewer"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "folderViewer.changeDirectory",
+        "title": "Change Directory"
+      },
+      {
+        "command": "folderViewer.refresh",
+        "title": "Refresh Folder Viewer"
+      },
+      {
+        "command": "folderViewer.goUp",
+        "title": "Go to Parent Directory"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "lint": "eslint src --ext ts"
+  },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.8.1",
+    "@types/vscode": "^1.105.0",
+    "@vscode/vsce": "^3.6.2",
+    "typescript": "^5.9.3"
+  }
 }
