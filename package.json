@@ -2,8 +2,9 @@
   "name": "quick-explorer",
   "displayName": "Quick Explorer",
   "description": "Quick and interactive explorer for VSCode",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "nacn",
+  "icon": "icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/NaokiIshimura/vscode-quick-explorer.git"
