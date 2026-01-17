@@ -1,22 +1,22 @@
 import * as vscode from 'vscode';
 import { FileSystemService } from './fileSystemService';
-import { FolderViewProvider } from './folderViewProvider';
+import { QuickExplorerViewProvider } from './quickExplorerViewProvider';
 
 /**
  * 拡張機能のアクティベーション時に呼ばれる関数
  * @param context 拡張機能のコンテキスト
  */
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Folder Viewer extension is now active');
+  console.log('Quick Explorer extension is now active');
 
   // FileSystemServiceのインスタンス化
   const fileSystemService = new FileSystemService();
 
-  // FolderViewProviderのインスタンス化
-  const folderViewProvider = new FolderViewProvider(fileSystemService);
+  // QuickExplorerViewProviderのインスタンス化
+  const folderViewProvider = new QuickExplorerViewProvider(fileSystemService);
 
   // TreeViewの作成と登録
-  const treeView = vscode.window.createTreeView('folderViewer', {
+  const treeView = vscode.window.createTreeView('quickExplorer', {
     treeDataProvider: folderViewProvider,
     showCollapseAll: false,
   });
@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // changeDirectoryコマンドの登録
   const changeDirectoryCommand = vscode.commands.registerCommand(
-    'folderViewer.changeDirectory',
+    'quickExplorer.changeDirectory',
     async (directoryPath: string) => {
       await folderViewProvider.changeDirectory(directoryPath);
       updateTreeViewTitle(treeView, folderViewProvider);
@@ -34,13 +34,13 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   // refreshコマンドの登録
-  const refreshCommand = vscode.commands.registerCommand('folderViewer.refresh', () => {
+  const refreshCommand = vscode.commands.registerCommand('quickExplorer.refresh', () => {
     folderViewProvider.refresh();
-    vscode.window.showInformationMessage('Folder Viewer refreshed');
+    vscode.window.showInformationMessage('Quick Explorer refreshed');
   });
 
   // goUpコマンドの登録
-  const goUpCommand = vscode.commands.registerCommand('folderViewer.goUp', async () => {
+  const goUpCommand = vscode.commands.registerCommand('quickExplorer.goUp', async () => {
     await folderViewProvider.goUp();
     updateTreeViewTitle(treeView, folderViewProvider);
   });
@@ -55,9 +55,9 @@ export function activate(context: vscode.ExtensionContext) {
 /**
  * TreeViewのタイトルを更新する
  * @param treeView TreeView
- * @param provider FolderViewProvider
+ * @param provider QuickExplorerViewProvider
  */
-function updateTreeViewTitle(treeView: vscode.TreeView<vscode.TreeItem>, provider: FolderViewProvider) {
+function updateTreeViewTitle(treeView: vscode.TreeView<vscode.TreeItem>, provider: QuickExplorerViewProvider) {
   treeView.description = provider.getRelativePath();
 }
 
@@ -65,5 +65,5 @@ function updateTreeViewTitle(treeView: vscode.TreeView<vscode.TreeItem>, provide
  * 拡張機能の非アクティブ化時に呼ばれる関数
  */
 export function deactivate() {
-  console.log('Folder Viewer extension is now deactivated');
+  console.log('Quick Explorer extension is now deactivated');
 }

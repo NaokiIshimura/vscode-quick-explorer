@@ -1,10 +1,10 @@
-# Folder Viewer
+# Quick Explorer
 
-Interactive folder viewer for VSCode explorer
+Quick and interactive explorer for VSCode
 
 ## Features
 
-- **Explorer Integration**: Adds a "Folder Viewer" panel to the VSCode Explorer sidebar
+- **Explorer Integration**: Adds a "Quick Explorer" panel to the VSCode Explorer sidebar
 - **Directory Navigation**: Click on folders to navigate through directories
 - **Parent Directory Navigation**: Use ".." to move up to the parent directory
 - **File Opening**: Click on files to open them in the VSCode editor
@@ -16,7 +16,7 @@ Interactive folder viewer for VSCode explorer
 
 ### From VSIX File
 
-1. Download the latest `.vsix` file from the [Releases](https://github.com/NaokiIshimura/vscode-folder-viewer/releases) page
+1. Download the latest `.vsix` file from the [Releases](https://github.com/NaokiIshimura/vscode-quick-explorer/releases) page
 2. Open VSCode
 3. Go to Extensions view (Ctrl+Shift+X / Cmd+Shift+X)
 4. Click the "..." menu and select "Install from VSIX..."
@@ -26,8 +26,8 @@ Interactive folder viewer for VSCode explorer
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/NaokiIshimura/vscode-folder-viewer.git
-   cd vscode-folder-viewer
+   git clone https://github.com/NaokiIshimura/vscode-quick-explorer.git
+   cd vscode-quick-explorer
    ```
 
 2. Install dependencies:
@@ -45,7 +45,7 @@ Interactive folder viewer for VSCode explorer
 ## Usage
 
 1. Open the Explorer sidebar in VSCode
-2. Find the "Folder Viewer" panel
+2. Find the "Quick Explorer" panel
 3. Click on folders to navigate into them
 4. Click on ".." to go to the parent directory
 5. Click on files to open them in the editor
@@ -60,15 +60,15 @@ Interactive folder viewer for VSCode explorer
 ### Project Structure
 
 ```
-vscode-folder-viewer/
+vscode-quick-explorer/
 ├── src/
-│   ├── extension.ts           # Extension entry point
-│   ├── folderViewProvider.ts  # TreeDataProvider implementation
-│   ├── folderTreeItem.ts      # Tree item implementations
-│   └── fileSystemService.ts   # File system operations
-├── out/                        # Compiled JavaScript files
-├── package.json                # Extension manifest
-└── tsconfig.json              # TypeScript configuration
+│   ├── extension.ts                 # Extension entry point
+│   ├── quickExplorerViewProvider.ts # TreeDataProvider implementation
+│   ├── quickExplorerTreeItem.ts     # Tree item implementations
+│   └── fileSystemService.ts         # File system operations
+├── out/                              # Compiled JavaScript files
+├── package.json                      # Extension manifest
+└── tsconfig.json                    # TypeScript configuration
 ```
 
 ### Build Commands
@@ -91,4 +91,4 @@ ISC
 
 ## Repository
 
-https://github.com/NaokiIshimura/vscode-folder-viewer
+https://github.com/NaokiIshimura/vscode-quick-explorer

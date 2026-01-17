@@ -1,9 +1,13 @@
 {
-  "name": "vscode-folder-viewer",
-  "displayName": "Folder Viewer",
-  "description": "Interactive folder viewer for VSCode explorer",
-  "version": "0.0.2",
+  "name": "quick-explorer",
+  "displayName": "Quick Explorer",
+  "description": "Quick and interactive explorer for VSCode",
+  "version": "0.0.3",
   "publisher": "nacn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NaokiIshimura/vscode-quick-explorer.git"
+  },
   "engines": {
     "vscode": "^1.105.0"
   },
@@ -21,22 +25,22 @@
     "views": {
       "explorer": [
         {
-          "id": "folderViewer",
-          "name": "Folder Viewer"
+          "id": "quickExplorer",
+          "name": "Quick Explorer"
         }
       ]
     },
     "commands": [
       {
-        "command": "folderViewer.changeDirectory",
+        "command": "quickExplorer.changeDirectory",
         "title": "Change Directory"
       },
       {
-        "command": "folderViewer.refresh",
-        "title": "Refresh Folder Viewer"
+        "command": "quickExplorer.refresh",
+        "title": "Refresh Quick Explorer"
       },
       {
-        "command": "folderViewer.goUp",
+        "command": "quickExplorer.goUp",
         "title": "Go to Parent Directory"
       }
     ]
