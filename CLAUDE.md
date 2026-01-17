@@ -48,6 +48,11 @@ npx vsce package
    - `activate()`: 拡張機能の起動時に呼ばれる
    - ViewProviderの初期化とコマンドの登録を行う
    - TreeViewのタイトル更新を管理
+   - 登録コマンド:
+     - `quickExplorer.changeDirectory`: ディレクトリ変更
+     - `quickExplorer.refresh`: ビュー更新
+     - `quickExplorer.goUp`: 親ディレクトリへ移動
+     - `quickExplorer.openSettings`: 設定画面を開く（TreeViewヘッダーのギアアイコン）
 
 2. **QuickExplorerViewProvider** - TreeDataProvider実装
    - ディレクトリ内容の取得と表示を担当

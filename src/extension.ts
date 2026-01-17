@@ -45,11 +45,24 @@ export function activate(context: vscode.ExtensionContext) {
     updateTreeViewTitle(treeView, folderViewProvider);
   });
 
+  // openSettingsコマンドの登録
+  const openSettingsCommand = vscode.commands.registerCommand(
+    'quickExplorer.openSettings',
+    () => {
+      // Quick Explorerの設定を開く
+      vscode.commands.executeCommand(
+        'workbench.action.openSettings',
+        'quickExplorer'
+      );
+    }
+  );
+
   // コンテキストに登録（拡張機能の非アクティブ化時にクリーンアップされる）
   context.subscriptions.push(treeView);
   context.subscriptions.push(changeDirectoryCommand);
   context.subscriptions.push(refreshCommand);
   context.subscriptions.push(goUpCommand);
+  context.subscriptions.push(openSettingsCommand);
 }
 
 /**

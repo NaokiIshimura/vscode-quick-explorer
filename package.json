@@ -2,7 +2,7 @@
   "name": "quick-explorer",
   "displayName": "Quick Explorer",
   "description": "Quick and interactive explorer for VSCode",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "nacn",
   "repository": {
     "type": "git",
@@ -42,8 +42,33 @@
       {
         "command": "quickExplorer.goUp",
         "title": "Go to Parent Directory"
+      },
+      {
+        "command": "quickExplorer.openSettings",
+        "title": "Quick Explorer: 設定を開く",
+        "icon": "$(gear)"
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "quickExplorer.openSettings",
+          "when": "view == quickExplorer",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Quick Explorer",
+      "properties": {
+        "quickExplorer.defaultPath": {
+          "type": "string",
+          "default": "",
+          "description": "デフォルトで開くディレクトリのパス。絶対パスまたは相対パス（ワークスペースルートからの相対）を指定できます。空の場合はワークスペースルートまたはホームディレクトリが使用されます。",
+          "scope": "resource"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -14,6 +14,9 @@ export class QuickExplorerViewProvider implements vscode.TreeDataProvider<vscode
   /** プロジェクトルート（これより上には移動しない） */
   private readonly projectRoot: string;
 
+  /** ワークスペースルート（相対パス表示の基準） */
+  private readonly workspaceRoot: string | undefined;
+
   /** ビュー更新のためのイベントエミッター */
   private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | null | void> =
     new vscode.EventEmitter<vscode.TreeItem | undefined | null | void>();
@@ -29,6 +32,8 @@ export class QuickExplorerViewProvider implements vscode.TreeDataProvider<vscode
     // 初期ディレクトリを設定（ワークスペースルートまたはホームディレクトリ）
     this.currentDirectory = this.fileSystemService.getInitialDirectory();
     this.projectRoot = this.currentDirectory;
+    // ワークスペースルートを取得（相対パス表示の基準として使用）
+    this.workspaceRoot = this.fileSystemService.getWorkspaceRoot();
   }
 
   /**
@@ -139,10 +144,17 @@ export class QuickExplorerViewProvider implements vscode.TreeDataProvider<vscode
   }
 
   /**
-   * プロジェクトルートからの相対パスを取得する
-   * @returns プロジェクトルートからの相対パス
+   * ワークスペースルートからの相対パスを取得する
+   * @returns ワークスペースルートからの相対パス（ワークスペースがない場合はプロジェクトルートからの相対パス）
    */
   getRelativePath(): string {
+    // ワークスペースルートがある場合は、ワークスペースルートからの相対パスを返す
+    if (this.workspaceRoot) {
+      const relativePath = path.relative(this.workspaceRoot, this.currentDirectory);
+      return relativePath || '.';
+    }
+
+    // ワークスペースルートがない場合は、プロジェクトルートからの相対パスを返す
     const relativePath = path.relative(this.projectRoot, this.currentDirectory);
     return relativePath || '.';
   }
