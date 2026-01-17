@@ -2,7 +2,7 @@
   "name": "quick-explorer",
   "displayName": "Quick Explorer",
   "description": "Quick and interactive explorer for VSCode",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "publisher": "nacn",
   "icon": "icon.png",
   "repository": {
@@ -81,9 +81,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^24.8.1",
+    "@types/node": "^24.10.9",
     "@types/vscode": "^1.105.0",
     "@vscode/vsce": "^3.6.2",
+    "jimp": "^1.6.0",
     "typescript": "^5.9.3"
   }
 }
