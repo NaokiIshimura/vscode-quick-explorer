@@ -177,7 +177,7 @@ export class FileSystemService {
       return resolvedPath;
     } else {
       vscode.window.showWarningMessage(
-        `Quick Explorer: 設定されたディレクトリが見つかりません: "${configuredPath}". デフォルト設定を使用します。`
+        `Quick Explorer: Configured directory not found: "${configuredPath}". Using default settings.`
       );
       return undefined;
     }

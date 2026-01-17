@@ -8,9 +8,9 @@ description: リリース準備を実行する（ブランチ作成、README更�
 
 ## 注意事項
 
-- コミットメッセージは日本語で記述してください
-- PRのタイトルは日本語で記述してください
-- PRのdescriptionは日本語で記述してください
+- コミットメッセージは英語で記述してください
+- PRのタイトルは英語で記述してください
+- PRのdescriptionは英語で記述してください
 - ファイル末尾には必ず空行を含めてください
 
 ---
@@ -98,8 +98,8 @@ git checkout -b v{バージョン}
 # 変更をステージング（.claude, .vscodeは除外）
 git add package.json CLAUDE.md README.md
 
-# コミット（日本語メッセージ）
-git commit -m "v{バージョン}リリースのためのドキュメント更新"
+# コミット（英語メッセージ）
+git commit -m "Release v{バージョン}: Update documentation and version"
 ```
 
 ## 6. Push
@@ -114,31 +114,31 @@ GitHub MCPまたはghコマンドを使用してPRを作成：
 
 - **base**: `main`
 - **head**: `v{バージョン}`
-- **title**: `[v{バージョン}] {変更の要約}` （日本語）
-- **description**: 変更内容の要約（日本語）
+- **title**: `[v{バージョン}] {変更の要約}` （英語）
+- **description**: 変更内容の要約（英語）
 
 **PR descriptionのテンプレート**：
 ```markdown
-## 概要
-- 変更内容の簡単な説明
+## Summary
+- Brief description of changes
 
-## 変更点
-### 追加
-- 新機能
+## Changes
+### Added
+- New features
 
-### 変更
-- 既存機能の変更
+### Changed
+- Changes to existing features
 
-### 修正
-- バグ修正
+### Fixed
+- Bug fixes
 
-### 削除
-- 削除された機能
+### Removed
+- Removed features
 
-## テストチェックリスト
-- [ ] npm run compileが成功する
-- [ ] デバッグモードで拡張機能が動作する
-- [ ] 主要機能が正常に動作する
+## Test Checklist
+- [ ] npm run compile succeeds
+- [ ] Extension works in debug mode
+- [ ] Main features work correctly
 ```
 
 ---
@@ -148,9 +148,9 @@ GitHub MCPまたはghコマンドを使用してPRを作成：
 | 項目 | 言語 |
 |------|------|
 | UI表記 | 英語 |
-| commitメッセージ | 日本語 |
-| PR title | 日本語 |
-| PR description | 日本語 |
+| commitメッセージ | 英語 |
+| PR title | 英語 |
+| PR description | 英語 |
 | CLAUDE.md | 日本語 |
 | README.md | 英語 |
 
