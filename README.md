@@ -11,6 +11,7 @@ Quick and interactive explorer for VSCode
 - **Project Root Restriction**: Cannot navigate above the project root directory
 - **Relative Path Display**: View title shows the relative path from the project root
 - **Icon Support**: Folders and files are displayed with appropriate icons
+- **Quick Settings Access**: Click the gear icon in the view header to access extension settings
 
 ## Installation
 

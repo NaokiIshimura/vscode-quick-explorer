@@ -95,11 +95,24 @@ export class FileSystemService {
 
   /**
    * 初期ディレクトリを取得する
-   * ワークスペースが開かれている場合はそのルート、そうでない場合はホームディレクトリを返す
+   * 優先順位: 設定 > ワークスペースルート > ホームディレクトリ
    * @returns 初期ディレクトリのパス
    */
   getInitialDirectory(): string {
-    return this.getWorkspaceRoot() || this.getHomeDirectory();
+    // 1. 設定から取得
+    const configuredPath = this.resolveDefaultPath();
+    if (configuredPath) {
+      return configuredPath;
+    }
+
+    // 2. ワークスペースルート
+    const workspaceRoot = this.getWorkspaceRoot();
+    if (workspaceRoot) {
+      return workspaceRoot;
+    }
+
+    // 3. ホームディレクトリ
+    return this.getHomeDirectory();
   }
 
   /**
@@ -119,5 +132,54 @@ export class FileSystemService {
   isRootDirectory(directoryPath: string): boolean {
     const parentPath = path.dirname(directoryPath);
     return parentPath === directoryPath;
+  }
+
+  /**
+   * パスが有効なディレクトリかどうかを同期的に検証する
+   * @param directoryPath 検証するパス
+   * @returns 有効なディレクトリの場合true
+   */
+  private validateDirectoryPath(directoryPath: string): boolean {
+    try {
+      const stats = require('fs').statSync(directoryPath);
+      return stats.isDirectory();
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * 設定から読み込んだデフォルトディレクトリを解決する
+   * @returns 有効なディレクトリパス、または設定が無効な場合はundefined
+   */
+  private resolveDefaultPath(): string | undefined {
+    const config = vscode.workspace.getConfiguration('quickExplorer');
+    const configuredPath = config.get<string>('defaultPath', '');
+
+    // 空文字列の場合はスキップ
+    if (!configuredPath || configuredPath.trim() === '') {
+      return undefined;
+    }
+
+    // パスを解決
+    let resolvedPath: string;
+    if (path.isAbsolute(configuredPath)) {
+      // 絶対パスの場合はそのまま使用
+      resolvedPath = configuredPath;
+    } else {
+      // 相対パスの場合はワークスペースルートまたはホームディレクトリからの相対として解釈
+      const basePath = this.getWorkspaceRoot() || this.getHomeDirectory();
+      resolvedPath = path.resolve(basePath, configuredPath);
+    }
+
+    // パスの検証
+    if (this.validateDirectoryPath(resolvedPath)) {
+      return resolvedPath;
+    } else {
+      vscode.window.showWarningMessage(
+        `Quick Explorer: 設定されたディレクトリが見つかりません: "${configuredPath}". デフォルト設定を使用します。`
+      );
+      return undefined;
+    }
   }
 }
