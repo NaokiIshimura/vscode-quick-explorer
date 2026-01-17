@@ -2,7 +2,7 @@
   "name": "quick-explorer",
   "displayName": "Quick Explorer",
   "description": "Quick and interactive explorer for VSCode",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "publisher": "nacn",
   "icon": "icon.png",
   "repository": {
@@ -46,7 +46,7 @@
       },
       {
         "command": "quickExplorer.openSettings",
-        "title": "Quick Explorer: 設定を開く",
+        "title": "Quick Explorer: Open Settings",
         "icon": "$(gear)"
       }
     ],
@@ -65,7 +65,7 @@
         "quickExplorer.defaultPath": {
           "type": "string",
           "default": "",
-          "description": "デフォルトで開くディレクトリのパス。絶対パスまたは相対パス（ワークスペースルートからの相対）を指定できます。空の場合はワークスペースルートまたはホームディレクトリが使用されます。",
+          "description": "Path to the default directory to open. Can be an absolute path or a relative path (relative to the workspace root). If empty, the workspace root or home directory will be used.",
           "scope": "resource"
         }
       }
