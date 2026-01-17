@@ -4,7 +4,7 @@ import * as path from 'path';
 /**
  * Tree View内の各アイテム（フォルダ/ファイル）を表すクラス
  */
-export class FolderTreeItem extends vscode.TreeItem {
+export class QuickExplorerTreeItem extends vscode.TreeItem {
   /**
    * @param label 表示名
    * @param resourceUri ファイルシステム上のURI
@@ -42,7 +42,7 @@ export class FolderTreeItem extends vscode.TreeItem {
     } else {
       // フォルダの場合は、ディレクトリを変更するコマンドを設定
       this.command = {
-        command: 'folderViewer.changeDirectory',
+        command: 'quickExplorer.changeDirectory',
         title: 'Change Directory',
         arguments: [resourceUri.fsPath],
       };
@@ -73,7 +73,7 @@ export class ParentDirectoryTreeItem extends vscode.TreeItem {
     }
     this.iconPath = new vscode.ThemeIcon('arrow-up');
     this.command = {
-      command: 'folderViewer.changeDirectory',
+      command: 'quickExplorer.changeDirectory',
       title: 'Go to Parent Directory',
       arguments: [parentPath],
     };

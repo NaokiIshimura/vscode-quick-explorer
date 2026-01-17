@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { FileSystemService } from './fileSystemService';
-import { FolderTreeItem, ParentDirectoryTreeItem } from './folderTreeItem';
+import { QuickExplorerTreeItem, ParentDirectoryTreeItem } from './quickExplorerTreeItem';
 
 /**
- * Folder ViewのTreeDataProvider
+ * Quick ExplorerのTreeDataProvider
  * ディレクトリ内容の表示とナビゲーションを担当
  */
-export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+export class QuickExplorerViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
   /** 現在表示しているディレクトリのパス */
   private currentDirectory: string;
 
@@ -62,7 +62,7 @@ export class FolderViewProvider implements vscode.TreeDataProvider<vscode.TreeIt
 
         // 各エントリをTreeItemに変換
         const treeItems = entries.map((entry) => {
-          const item = new FolderTreeItem(
+          const item = new QuickExplorerTreeItem(
             entry.name,
             vscode.Uri.file(entry.path),
             entry.isDirectory,
