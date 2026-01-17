@@ -52,6 +52,19 @@ Quick and interactive explorer for VSCode
 5. Click on files to open them in the editor
 6. The view title shows your current location relative to the project root
 
+## Settings
+
+This extension provides the following configuration options:
+
+- **`quickExplorer.defaultPath`**: Default directory to open on startup
+  - Type: `string`
+  - Default: `""` (uses workspace root or home directory)
+  - Description: Specify an absolute path or a relative path from the workspace root. If empty, the workspace root or home directory will be used.
+
+To configure this setting:
+1. Click the gear icon in the Quick Explorer view header, or
+2. Go to File > Preferences > Settings and search for "Quick Explorer"
+
 ## Requirements
 
 - VSCode version 1.105.0 or higher
