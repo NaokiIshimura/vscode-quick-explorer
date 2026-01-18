@@ -2,6 +2,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as os from 'os';
 import * as vscode from 'vscode';
+import { SortOrder } from './types';
 
 /**
  * ファイル/フォルダエントリの情報
@@ -13,6 +14,8 @@ export interface FileEntry {
   path: string;
   /** ディレクトリかどうか */
   isDirectory: boolean;
+  /** 変更日時 */
+  modifiedTime: Date;
 }
 
 /**
@@ -22,35 +25,34 @@ export class FileSystemService {
   /**
    * 指定されたディレクトリの内容を取得する
    * @param directoryPath ディレクトリの絶対パス
-   * @returns ファイル/フォルダエントリの配列（フォルダ優先、アルファベット順でソート済み）
+   * @param sortOrder ソート順（デフォルト: フォルダ優先 + 名前昇順）
+   * @returns ファイル/フォルダエントリの配列（指定されたソート順でソート済み）
    */
-  async getDirectoryContents(directoryPath: string): Promise<FileEntry[]> {
+  async getDirectoryContents(
+    directoryPath: string,
+    sortOrder: SortOrder = SortOrder.FolderFirstNameAsc
+  ): Promise<FileEntry[]> {
     try {
       const entries = await fs.readdir(directoryPath, { withFileTypes: true });
 
       const fileEntries: FileEntry[] = await Promise.all(
         entries.map(async (entry) => {
           const fullPath = path.join(directoryPath, entry.name);
+          // fs.stat()で変更日時を取得。エラー時は現在時刻をデフォルトとする
+          const stats = await fs.stat(fullPath).catch(() => ({
+            mtime: new Date()
+          }));
           return {
             name: entry.name,
             path: fullPath,
             isDirectory: entry.isDirectory(),
+            modifiedTime: stats.mtime
           };
         })
       );
 
-      // フォルダ優先、アルファベット順でソート
-      return fileEntries.sort((a, b) => {
-        // フォルダ優先
-        if (a.isDirectory && !b.isDirectory) {
-          return -1;
-        }
-        if (!a.isDirectory && b.isDirectory) {
-          return 1;
-        }
-        // 同じタイプの場合はアルファベット順
-        return a.name.localeCompare(b.name);
-      });
+      // 指定されたソート順でソート
+      return this.sortFileEntries(fileEntries, sortOrder);
     } catch (error) {
       vscode.window.showErrorMessage(
         `Failed to read directory: ${directoryPath}. ${error instanceof Error ? error.message : String(error)}`
@@ -181,5 +183,41 @@ export class FileSystemService {
       );
       return undefined;
     }
+  }
+
+  /**
+   * ファイルエントリを指定されたソート順でソートする
+   * @param entries ファイルエントリの配列
+   * @param sortOrder ソート順
+   * @returns ソート済みのファイルエントリ配列
+   */
+  private sortFileEntries(entries: FileEntry[], sortOrder: SortOrder): FileEntry[] {
+    return entries.sort((a, b) => {
+      // フォルダ優先（全てのソート順で共通）
+      if (a.isDirectory && !b.isDirectory) {
+        return -1;
+      }
+      if (!a.isDirectory && b.isDirectory) {
+        return 1;
+      }
+
+      // 同じタイプの場合は、ソート順に応じて比較
+      switch (sortOrder) {
+        case SortOrder.FolderFirstNameAsc:
+          return a.name.localeCompare(b.name);
+
+        case SortOrder.FolderFirstNameDesc:
+          return b.name.localeCompare(a.name);
+
+        case SortOrder.FolderFirstModifiedAsc:
+          return a.modifiedTime.getTime() - b.modifiedTime.getTime();
+
+        case SortOrder.FolderFirstModifiedDesc:
+          return b.modifiedTime.getTime() - a.modifiedTime.getTime();
+
+        default:
+          return a.name.localeCompare(b.name);
+      }
+    });
   }
 }

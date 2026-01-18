@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { FileSystemService } from './fileSystemService';
 import { QuickExplorerViewProvider } from './quickExplorerViewProvider';
+import { SortOrder } from './types';
 
 /**
  * 拡張機能のアクティベーション時に呼ばれる関数
@@ -45,6 +46,17 @@ export function activate(context: vscode.ExtensionContext) {
     updateTreeViewTitle(treeView, folderViewProvider);
   });
 
+  // toggleSortOrderコマンドの登録
+  const toggleSortOrderCommand = vscode.commands.registerCommand(
+    'quickExplorer.toggleSortOrder',
+    () => {
+      folderViewProvider.toggleSortOrder();
+      const currentSort = folderViewProvider.getSortOrder();
+      const label = getSortOrderLabel(currentSort);
+      vscode.window.showInformationMessage(`Sort order: ${label}`);
+    }
+  );
+
   // openSettingsコマンドの登録
   const openSettingsCommand = vscode.commands.registerCommand(
     'quickExplorer.openSettings',
@@ -62,6 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(changeDirectoryCommand);
   context.subscriptions.push(refreshCommand);
   context.subscriptions.push(goUpCommand);
+  context.subscriptions.push(toggleSortOrderCommand);
   context.subscriptions.push(openSettingsCommand);
 }
 
@@ -72,6 +85,26 @@ export function activate(context: vscode.ExtensionContext) {
  */
 function updateTreeViewTitle(treeView: vscode.TreeView<vscode.TreeItem>, provider: QuickExplorerViewProvider) {
   treeView.description = provider.getRelativePath();
+}
+
+/**
+ * ソート順のラベルを取得する
+ * @param sortOrder ソート順
+ * @returns ソート順のラベル
+ */
+function getSortOrderLabel(sortOrder: SortOrder): string {
+  switch (sortOrder) {
+    case SortOrder.FolderFirstNameAsc:
+      return 'Folder First, Name (A→Z)';
+    case SortOrder.FolderFirstNameDesc:
+      return 'Folder First, Name (Z→A)';
+    case SortOrder.FolderFirstModifiedAsc:
+      return 'Folder First, Modified (Oldest→Newest)';
+    case SortOrder.FolderFirstModifiedDesc:
+      return 'Folder First, Modified (Newest→Oldest)';
+    default:
+      return 'Unknown';
+  }
 }
 
 /**

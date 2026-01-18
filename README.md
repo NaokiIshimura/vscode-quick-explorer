@@ -1,5 +1,7 @@
 # Quick Explorer
 
+[![Version](https://img.shields.io/badge/version-0.0.9-blue)](https://github.com/NaokiIshimura/vscode-quick-explorer/releases) [![VS Code](https://img.shields.io/badge/VS%20Code-1.105.0%2B-blue)](https://code.visualstudio.com/) [![License](https://img.shields.io/badge/license-ISC-green)](https://opensource.org/licenses/ISC)
+
 Quick and interactive explorer for VSCode
 
 ## Features
