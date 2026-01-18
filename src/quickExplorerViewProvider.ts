@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { FileSystemService } from './fileSystemService';
 import { QuickExplorerTreeItem, ParentDirectoryTreeItem } from './quickExplorerTreeItem';
+import { SortOrder, sortOrderToString, stringToSortOrder } from './types';
 
 /**
  * Quick ExplorerのTreeDataProvider
@@ -16,6 +17,9 @@ export class QuickExplorerViewProvider implements vscode.TreeDataProvider<vscode
 
   /** ワークスペースルート（相対パス表示の基準） */
   private readonly workspaceRoot: string | undefined;
+
+  /** 現在のソート順 */
+  private currentSortOrder: SortOrder = SortOrder.FolderFirstNameAsc;
 
   /** ビュー更新のためのイベントエミッター */
   private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | null | void> =
@@ -34,6 +38,9 @@ export class QuickExplorerViewProvider implements vscode.TreeDataProvider<vscode
     this.projectRoot = this.currentDirectory;
     // ワークスペースルートを取得（相対パス表示の基準として使用）
     this.workspaceRoot = this.fileSystemService.getWorkspaceRoot();
+
+    // 設定から初期ソート順を読み込む
+    this.currentSortOrder = this.loadSortOrderFromConfig();
   }
 
   /**
@@ -62,8 +69,11 @@ export class QuickExplorerViewProvider implements vscode.TreeDataProvider<vscode
           items.push(new ParentDirectoryTreeItem(parentPath, this.projectRoot));
         }
 
-        // 現在のディレクトリの内容を取得
-        const entries = await this.fileSystemService.getDirectoryContents(this.currentDirectory);
+        // 現在のディレクトリの内容を取得（現在のソート順を渡す）
+        const entries = await this.fileSystemService.getDirectoryContents(
+          this.currentDirectory,
+          this.currentSortOrder
+        );
 
         // 各エントリをTreeItemに変換
         const treeItems = entries.map((entry) => {
@@ -190,5 +200,54 @@ export class QuickExplorerViewProvider implements vscode.TreeDataProvider<vscode
     const normalizedRoot = this.projectRoot.replace(/\\/g, '/');
 
     return normalizedPath === normalizedRoot || normalizedPath.startsWith(normalizedRoot + '/');
+  }
+
+  /**
+   * ソート順を次の順番に変更する（循環）
+   */
+  toggleSortOrder(): void {
+    const sortOrders = [
+      SortOrder.FolderFirstNameAsc,
+      SortOrder.FolderFirstNameDesc,
+      SortOrder.FolderFirstModifiedAsc,
+      SortOrder.FolderFirstModifiedDesc
+    ];
+
+    const currentIndex = sortOrders.indexOf(this.currentSortOrder);
+    const nextIndex = (currentIndex + 1) % sortOrders.length;
+    this.currentSortOrder = sortOrders[nextIndex];
+
+    // 設定に保存
+    this.saveSortOrderToConfig(this.currentSortOrder);
+
+    this.refresh();
+  }
+
+  /**
+   * 現在のソート順を取得する
+   * @returns 現在のソート順
+   */
+  getSortOrder(): SortOrder {
+    return this.currentSortOrder;
+  }
+
+  /**
+   * 設定からソート順を読み込む
+   * @returns 設定されたソート順（設定がない場合はデフォルト）
+   */
+  private loadSortOrderFromConfig(): SortOrder {
+    const config = vscode.workspace.getConfiguration('quickExplorer');
+    const sortOrderString = config.get<string>('defaultSortOrder', 'folderFirstNameAsc');
+    return stringToSortOrder(sortOrderString);
+  }
+
+  /**
+   * ソート順を設定に保存する
+   * @param sortOrder 保存するソート順
+   */
+  private async saveSortOrderToConfig(sortOrder: SortOrder): Promise<void> {
+    const config = vscode.workspace.getConfiguration('quickExplorer');
+    const sortOrderString = sortOrderToString(sortOrder);
+    await config.update('defaultSortOrder', sortOrderString, vscode.ConfigurationTarget.Global);
   }
 }

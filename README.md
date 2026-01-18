@@ -11,6 +11,8 @@ Quick and interactive explorer for VSCode
 - **Project Root Restriction**: Cannot navigate above the project root directory
 - **Relative Path Display**: View title shows the relative path from the project root
 - **Icon Support**: Folders and files are displayed with appropriate icons
+- **Flexible Sorting**: Toggle between 4 sort orders (folders-first with name/date, ascending/descending)
+- **Persistent Sort Settings**: Sort order is saved and restored across VSCode restarts
 - **Quick Settings Access**: Click the gear icon in the view header to access extension settings
 
 ## Installation
@@ -50,7 +52,12 @@ Quick and interactive explorer for VSCode
 3. Click on folders to navigate into them
 4. Click on ".." to go to the parent directory
 5. Click on files to open them in the editor
-6. The view title shows your current location relative to the project root
+6. Click the sort icon in the view header to toggle between sort orders:
+   - Folders first, then by name (A-Z)
+   - Folders first, then by name (Z-A)
+   - Folders first, then by modification time (oldest first)
+   - Folders first, then by modification time (newest first)
+7. The view title shows your current location relative to the project root
 
 ## Settings
 
@@ -61,7 +68,13 @@ This extension provides the following configuration options:
   - Default: `""` (uses workspace root or home directory)
   - Description: Specify an absolute path or a relative path from the workspace root. If empty, the workspace root or home directory will be used.
 
-To configure this setting:
+- **`quickExplorer.defaultSortOrder`**: Default sort order for files and folders
+  - Type: `string` (enum)
+  - Options: `folderFirstNameAsc`, `folderFirstNameDesc`, `folderFirstModifiedAsc`, `folderFirstModifiedDesc`
+  - Default: `folderFirstNameAsc`
+  - Description: Determines how files and folders are sorted in the explorer. This setting is automatically updated when you toggle the sort order using the sort icon.
+
+To configure these settings:
 1. Click the gear icon in the Quick Explorer view header, or
 2. Go to File > Preferences > Settings and search for "Quick Explorer"
 
@@ -79,7 +92,8 @@ vscode-quick-explorer/
 │   ├── extension.ts                 # Extension entry point
 │   ├── quickExplorerViewProvider.ts # TreeDataProvider implementation
 │   ├── quickExplorerTreeItem.ts     # Tree item implementations
-│   └── fileSystemService.ts         # File system operations
+│   ├── fileSystemService.ts         # File system operations
+│   └── types.ts                     # Type definitions and helper functions
 ├── out/                              # Compiled JavaScript files
 ├── package.json                      # Extension manifest
 └── tsconfig.json                    # TypeScript configuration
