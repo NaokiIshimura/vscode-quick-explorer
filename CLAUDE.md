@@ -52,6 +52,7 @@ npx vsce package
      - `quickExplorer.changeDirectory`: ディレクトリ変更
      - `quickExplorer.refresh`: ビュー更新
      - `quickExplorer.goUp`: 親ディレクトリへ移動
+     - `quickExplorer.toggleSortOrder`: ソート順を切り替え（TreeViewヘッダーのソートアイコン）
      - `quickExplorer.openSettings`: 設定画面を開く（TreeViewヘッダーのギアアイコン）
 
 2. **QuickExplorerViewProvider** - TreeDataProvider実装
@@ -59,6 +60,7 @@ npx vsce package
    - `currentDirectory`と`projectRoot`を管理
    - プロジェクトルートより上には移動不可の制限を実装
    - ビューの更新通知（EventEmitter）を管理
+   - ソート順の管理と設定への永続化を担当
 
 3. **QuickExplorerTreeItem** - TreeItemの具象実装
    - フォルダとファイルの表示を担当
@@ -67,9 +69,14 @@ npx vsce package
    - `ParentDirectoryTreeItem`: ".."表示用の特別なTreeItem
 
 4. **FileSystemService** - ファイルシステム操作のラッパー
-   - ディレクトリ内容の取得（フォルダ優先、アルファベット順でソート）
+   - ディレクトリ内容の取得（ソート順に応じてソート）
    - パスの妥当性チェック
    - 初期ディレクトリの決定（ワークスペースルート or ホームディレクトリ）
+
+5. **types.ts** - 型定義とヘルパー関数
+   - `SortOrder` enum: ソート順の定義
+   - `sortOrderToString()`: SortOrder enum → 設定値文字列への変換
+   - `stringToSortOrder()`: 設定値文字列 → SortOrder enumへの変換
 
 ### データフロー
 
@@ -89,6 +96,16 @@ User Click
 - **プロジェクトルート制限**: ユーザーはプロジェクトルート（初期ディレクトリ）より上には移動できません
 - **相対パス表示**: TreeViewのdescriptionには、プロジェクトルートからの相対パスを表示
 - **フラットリスト**: サブディレクトリは展開せず、常にフラットなリスト表示
+
+### ソート機能
+
+- **ソート順の種類**:
+  - フォルダ優先 + 名前昇順（デフォルト）
+  - フォルダ優先 + 名前降順
+  - フォルダ優先 + 変更日時昇順
+  - フォルダ優先 + 変更日時降順
+- **ソート順の切り替え**: TreeViewヘッダーのソートアイコンをクリックして循環的に切り替え
+- **設定の永続化**: ソート順はVSCodeの設定ファイル（`quickExplorer.defaultSortOrder`）に保存され、VSCode再起動後も保持されます
 
 ## Code Conventions
 

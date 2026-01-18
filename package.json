@@ -2,7 +2,7 @@
   "name": "quick-explorer",
   "displayName": "Quick Explorer",
   "description": "Quick and interactive explorer for VSCode",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "publisher": "nacn",
   "icon": "icon.png",
   "repository": {
@@ -45,6 +45,11 @@
         "title": "Go to Parent Directory"
       },
       {
+        "command": "quickExplorer.toggleSortOrder",
+        "title": "Quick Explorer: Toggle Sort Order",
+        "icon": "$(sort-precedence)"
+      },
+      {
         "command": "quickExplorer.openSettings",
         "title": "Quick Explorer: Open Settings",
         "icon": "$(gear)"
@@ -53,9 +58,14 @@
     "menus": {
       "view/title": [
         {
+          "command": "quickExplorer.toggleSortOrder",
+          "when": "view == quickExplorer",
+          "group": "navigation@1"
+        },
+        {
           "command": "quickExplorer.openSettings",
           "when": "view == quickExplorer",
-          "group": "navigation"
+          "group": "navigation@2"
         }
       ]
     },
@@ -66,6 +76,24 @@
           "type": "string",
           "default": "",
           "description": "Path to the default directory to open. Can be an absolute path or a relative path (relative to the workspace root). If empty, the workspace root or home directory will be used.",
+          "scope": "resource"
+        },
+        "quickExplorer.defaultSortOrder": {
+          "type": "string",
+          "enum": [
+            "folderFirstNameAsc",
+            "folderFirstNameDesc",
+            "folderFirstModifiedAsc",
+            "folderFirstModifiedDesc"
+          ],
+          "enumDescriptions": [
+            "Folders first, then by name (A-Z)",
+            "Folders first, then by name (Z-A)",
+            "Folders first, then by modification time (oldest first)",
+            "Folders first, then by modification time (newest first)"
+          ],
+          "default": "folderFirstNameAsc",
+          "description": "Default sort order for files and folders",
           "scope": "resource"
         }
       }
