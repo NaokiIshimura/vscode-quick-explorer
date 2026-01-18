@@ -6,16 +6,10 @@ Quick and interactive explorer for VSCode
 
 ## Features
 
-- **Explorer Integration**: Adds a "Quick Explorer" panel to the VSCode Explorer sidebar
-- **Directory Navigation**: Click on folders to navigate through directories
-- **Parent Directory Navigation**: Use ".." to move up to the parent directory
-- **File Opening**: Click on files to open them in the VSCode editor
-- **Project Root Restriction**: Cannot navigate above the project root directory
-- **Relative Path Display**: View title shows the relative path from the project root
-- **Icon Support**: Folders and files are displayed with appropriate icons
-- **Flexible Sorting**: Toggle between 4 sort orders (folders-first with name/date, ascending/descending)
-- **Persistent Sort Settings**: Sort order is saved and restored across VSCode restarts
-- **Quick Settings Access**: Click the gear icon in the view header to access extension settings
+- **Quick Directory Navigation**: Click folders to navigate, use ".." to go up, and open files instantly. The view displays intuitive icons and shows your current path relative to the project root.
+- **Flexible Sorting Options**: Toggle between 4 sort orders (folders-first with name/date, ascending/descending). Your preference is automatically saved and restored across VSCode restarts.
+- **Project Root Protection**: Safely navigate within your project - you cannot accidentally move above the project root directory.
+- **Seamless VSCode Integration**: Adds a native "Quick Explorer" panel to your Explorer sidebar with quick access to extension settings via the gear icon.
 
 ## Installation
 
@@ -122,3 +116,4 @@ ISC
 ## Repository
 
 https://github.com/NaokiIshimura/vscode-quick-explorer
+
