@@ -5,3 +5,5 @@ dist/
 .vscode-test/
 .vscode/
 coverage/
+vitest.config.js
+vitest.config.js.map
