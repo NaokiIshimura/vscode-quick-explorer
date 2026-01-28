@@ -1,6 +1,6 @@
 # Quick Explorer
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/NaokiIshimura/vscode-quick-explorer/releases) [![VS Code](https://img.shields.io/badge/VS%20Code-1.105.0%2B-blue)](https://code.visualstudio.com/) [![License](https://img.shields.io/badge/license-ISC-green)](https://opensource.org/licenses/ISC)
+[![Version](https://img.shields.io/badge/version-1.0.1-blue)](https://github.com/NaokiIshimura/vscode-quick-explorer/releases) [![VS Code](https://img.shields.io/badge/VS%20Code-1.105.0%2B-blue)](https://code.visualstudio.com/) [![License](https://img.shields.io/badge/license-ISC-green)](https://opensource.org/licenses/ISC)
 
 Quick and interactive explorer for VSCode
 
@@ -89,7 +89,10 @@ vscode-quick-explorer/
 │   ├── quickExplorerViewProvider.ts # TreeDataProvider implementation
 │   ├── quickExplorerTreeItem.ts     # Tree item implementations
 │   ├── fileSystemService.ts         # File system operations
-│   └── types.ts                     # Type definitions and helper functions
+│   ├── types.ts                     # Type definitions and helper functions
+│   └── test/                        # Test files
+│       ├── __mocks__/               # VSCode API mocks
+│       └── *.test.ts                # Unit tests
 ├── out/                              # Compiled JavaScript files
 ├── package.json                      # Extension manifest
 └── tsconfig.json                    # TypeScript configuration
@@ -100,6 +103,9 @@ vscode-quick-explorer/
 - `npm run compile` - Compile TypeScript to JavaScript
 - `npm run watch` - Watch mode for development
 - `npm run lint` - Run ESLint
+- `npm test` - Run tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Run tests with coverage report
 
 ### Building VSIX
 

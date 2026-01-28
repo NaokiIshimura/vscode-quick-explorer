@@ -2,7 +2,7 @@
   "name": "quick-explorer",
   "displayName": "Quick Explorer",
   "description": "Quick and interactive explorer for VSCode",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "nacn",
   "icon": "icon.png",
   "repository": {
@@ -104,15 +104,20 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^24.10.9",
     "@types/vscode": "^1.105.0",
+    "@vitest/coverage-v8": "^4.0.18",
     "@vscode/vsce": "^3.6.2",
     "jimp": "^1.6.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }
