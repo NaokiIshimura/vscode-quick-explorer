@@ -26,7 +26,19 @@ npm run vscode:prepublish
 npm run lint
 ```
 
-### Testing and Development
+### Testing
+```bash
+# テストを実行
+npm test
+
+# ウォッチモードでテスト
+npm run test:watch
+
+# カバレッジ付きでテスト
+npm run test:coverage
+```
+
+### Development
 ```bash
 # F5キーを押してExtension Development Hostを起動
 # または、VSCodeのRun > Start Debugging を使用
@@ -116,7 +128,13 @@ User Click
 ### ファイル構成
 - ファイル末尾には必ず空行を追加
 - `src/`配下にTypeScriptソースを配置
+- `src/test/`配下にテストファイルを配置
 - `out/`にコンパイル済みJavaScriptが生成される
+
+### テスト構成
+- **フレームワーク**: Vitest
+- **モック**: `src/test/__mocks__/vscode.ts`にVSCode APIのモック
+- **カバレッジ**: v8プロバイダーを使用
 
 ### TypeScript設定
 - Strict mode有効
