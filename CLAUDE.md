@@ -141,6 +141,11 @@ User Click
 - Target: ES2020
 - Module: CommonJS
 
+### コミット・プルリクエスト
+- **英語で記述**: このプロジェクトでは、以下は英語で記述します
+  - コミットメッセージ（タイトル・本文）
+  - プルリクエストのtitle・description
+
 ## Release Process
 
 リリースはGitHub Actionsで自動化されています（`.github/workflows/release-vsix.yml`）:
