@@ -148,8 +148,14 @@ User Click
 
 ## Release Process
 
-リリースはGitHub Actionsで自動化されています（`.github/workflows/release-vsix.yml`）:
+リリースはGitHub Actionsで自動化されています（`.github/workflows/`）:
 
-1. `master`ブランチへのプッシュまたはリリースの公開時に自動実行
-2. 依存関係のインストール → コンパイル → VSIXパッケージ作成
-3. GitHub Releasesに`.vsix`ファイルをアップロード
+| ワークフロー | 役割 |
+|---|---|
+| `build-vsix.yml` | 再利用ワークフロー。依存関係のインストール → コンパイル → テスト → VSIXパッケージ作成 |
+| `release-vsix.yml` | GitHub Releasesに`.vsix`ファイルをアップロード |
+| `publish-marketplace.yml` | VS Code Marketplaceへ公開 |
+
+1. `main`ブランチへのプッシュ、リリースの公開、または手動実行（workflow_dispatch）時に自動実行
+2. `build-vsix.yml`でVSIXを作成し、各ワークフローで利用
+3. Marketplaceへの公開にはリポジトリSecretsの`VSCE_PAT`が必要（未設定時はスキップ）
