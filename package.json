@@ -2,7 +2,7 @@
   "name": "quick-explorer",
   "displayName": "Quick Explorer",
   "description": "Quick and interactive explorer for VSCode",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "nacn",
   "icon": "icon.png",
   "repository": {
